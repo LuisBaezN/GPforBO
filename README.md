@@ -4,4 +4,12 @@ Bayesian optimization (BO) is used to find a maximum or minimum global in a blac
 
 ## Attention
 
-The full documentation and instructions to run this algorithm will be available soon.
+The first version of the genetic algorithm is working. The bayesian optimization algorithm needs revision to its posterior conjunction to the GA.
+
+# Installation
+
+You need anaconda to replicate this project. A yml file is available to replicate the environment. Just use the next command once you have anaconda or miniconda installed in your computer:
+
+```
+conda env create -n YOUR-ENVNAME --file environment.yml
+```

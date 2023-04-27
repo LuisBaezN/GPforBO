@@ -414,4 +414,4 @@ if __name__ == "__main__":
         #print(len(parents[i][1]))
 
     print(sco)
-    print('\n\n>>Mejor solucion: ', ''.join(parents[sco[0][1]]))
+    print('\n\n>> Mejor solucion: ', ''.join(parents[sco[0][1]]))
