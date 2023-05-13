@@ -423,7 +423,7 @@ def acquisition(X, Xsamples, model, t_func):
 	best = min(yhat) #antes: max
 	# calcula la media y la desviación estandar mediante la función sustituta
 	m, v = surrogate(model, Xsamples)
-	m = m[:, 0]
+	#m = m[:, 0]
 	stri = ''.join(t_func)
 	try:
 		AF = eval(stri)
@@ -491,10 +491,10 @@ if __name__ == "__main__":
         gen = i + 1 
         #gen = gen + 1
 
-        print('>>>Generacion:', gen)
+        print('>>> Generacion:', gen)
         sco = evaluate(parents)
 
-        print('>>>Precision: ', sco[0][0])
+        print('>>> Precision: ', sco[0][0])
 
         new_sons = mate(parents,sco)
 

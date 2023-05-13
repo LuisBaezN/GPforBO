@@ -31,7 +31,7 @@ def acquisition(X, Xsamples, model):
 	best = min(yhat) #antes: max
 	# calcula la media y la desviación estandar mediante la función sustituta
 	mu, std = surrogate(model, Xsamples)
-	mu = mu[:, 0]
+	print(f'> mu: {mu}\n> std: {std}')
 	# calcula la probabilidad de mejora
 	probs = norm.cdf((mu - best) / (std+1E-9)) #Orig:, mu + (1+7)*3
 
@@ -70,39 +70,41 @@ def sample_floats(low, high, k=1):
     return result
 
 
-random.seed(7)
+if __name__ == '__main__':
 
-points = 10
-opt_iter = 100
+	random.seed(7)
 
-X = sample_floats(0, 10, points) #Antes: X = random(100)
-X = asarray(X)
+	points = 10
+	opt_iter = 100
 
-y = asarray([objective(x) for x in X])
+	X = sample_floats(0, 10, points) #Antes: X = random(100)
+	X = asarray(X)
 
-X = X.reshape(len(X), 1)
-y = y.reshape(len(y), 1)
+	y = asarray([objective(x) for x in X])
 
-model = GaussianProcessRegressor()
-model.fit(X, y)
-plot(X, y, model)
+	X = X.reshape(len(X), 1)
+	y = y.reshape(len(y), 1)
 
-# Optimizacion
-for i in range(opt_iter):
-	x = opt_acquisition(X, y, model)
-	actual = objective(x)
-	est, _ = surrogate(model, [[x]])
-	print('>x=%.3f, f()=%3f, actual=%.3f' % (x, est, actual))
-	
-	# Agregar al dataset
-	X = vstack((X, [[x]]))
-	y = vstack((y, [[actual]]))
-	
-	# actualiza el modelo
+	model = GaussianProcessRegressor()
 	model.fit(X, y)
+	plot(X, y, model)
 
-# Grafica todas las miestras de la función sustituta final
-plot(X, y, model)
+	# Optimizacion
+	for i in range(opt_iter):
+		x = opt_acquisition(X, y, model)
+		actual = objective(x)
+		est, _ = surrogate(model, [[x]])
+		print('> x=%.3f, f()=%3f, actual=%.3f' % (x, est, actual))
+		
+		# Agregar al dataset
+		X = vstack((X, [[x]]))
+		y = vstack((y, [[actual]]))
+		
+		# actualiza el modelo
+		model.fit(X, y)
 
-ix = argmin(y)
-print('>> Mejor resultado: x=%.3f, y=%.3f' % (X[ix], y[ix]))
+	# Grafica todas las miestras de la función sustituta final
+	plot(X, y, model)
+
+	ix = argmin(y)
+	print('> Mejor resultado: x=%.3f, y=%.3f' % (X[ix], y[ix]))
